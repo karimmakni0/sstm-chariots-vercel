@@ -1,0 +1,82 @@
+.layout { display: flex; min-height: 100vh; background: var(--bg-primary); }
+.layout__main { flex: 1; display: flex; flex-direction: column; margin-left: 260px; transition: margin-left 0.3s; }
+.layout__main.collapsed { margin-left: 72px; }
+.layout__content { flex: 1; padding: 24px; overflow-y: auto; }
+@media (max-width: 768px) {
+  .layout__main { margin-left: 0; }
+  .layout__main.collapsed { margin-left: 0; }
+}
+
+/* ── Global Driving Forklift ── */
+.global-forklift {
+  position: fixed;
+  top: 130px;
+  left: 320px;
+  width: 55px;
+  height: auto;
+  opacity: 0.55;
+  z-index: 20;
+  pointer-events: none;
+  animation: forkliftDrive 18s linear infinite;
+}
+
+@keyframes forkliftDrive {
+  0% {
+    transform: translateX(0) scaleX(1);
+  }
+  48% {
+    transform: translateX(calc(100vw - 430px)) scaleX(1);
+  }
+  50% {
+    transform: translateX(calc(100vw - 430px)) scaleX(-1);
+  }
+  98% {
+    transform: translateX(0) scaleX(-1);
+  }
+  100% {
+    transform: translateX(0) scaleX(1);
+  }
+}
+
+.forklift-svg { width: 100%; height: auto; overflow: visible; }
+
+/* Keep rotating wheels for extra detail while moving */
+.forklift-wheel, .forklift-wheel-inner {
+  transform-origin: center;
+  transform-box: fill-box;
+  animation: wheelRotate 0.8s linear infinite;
+}
+
+@keyframes wheelRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Subtle vibration */
+.forklift-body {
+  animation: forkliftVibrate 0.2s ease-in-out infinite alternate;
+}
+
+@keyframes forkliftVibrate {
+  from { transform: translateY(0); }
+  to { transform: translateY(-0.5px); }
+}
+
+@media (max-width: 768px) {
+  .global-forklift { left: 20px; top: 90px; animation-duration: 12s; }
+  @keyframes forkliftDriveMobile {
+    0% { transform: translateX(-100px) scaleX(1); }
+    48% { transform: translateX(100vw) scaleX(1); }
+    50% { transform: translateX(100vw) scaleX(-1); }
+    98% { transform: translateX(-100px) scaleX(-1); }
+    100% { transform: translateX(-100px) scaleX(1); }
+  }
+  .global-forklift { animation-name: forkliftDriveMobile; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .global-forklift {
+    animation: none;
+    opacity: 0.2;
+  }
+}
